@@ -1,5 +1,6 @@
 import { StorageProvider } from './StorageProvider.js';
 import { SupabaseStorageProvider } from './SupabaseStorageProvider.js';
+import { SupabaseAxiosProvider } from './SupabaseAxiosProvider.js';
 import { FileStorageProvider } from './FileStorageProvider.js';
 import { MemoryStorageProvider } from './MemoryStorageProvider.js';
 import { isSupabaseConfigured } from '../config/supabase.js';
@@ -23,7 +24,7 @@ export class StorageProviderFactory {
 
     switch (providerType) {
       case 'supabase':
-        return new SupabaseStorageProvider();
+        return new SupabaseAxiosProvider();
       
       case 'file':
         return new FileStorageProvider();

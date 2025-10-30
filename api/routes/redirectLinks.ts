@@ -196,4 +196,34 @@ router.get('/find', async (req: Request, res: Response) => {
   }
 });
 
+// GET /api/redirect-links/redirect/:serviceKey - Redirecionar para URL
+router.get('/redirect/:serviceKey', async (req: Request, res: Response) => {
+  try {
+    const { serviceKey } = req.params;
+    const { quantity } = req.query;
+
+    const provider = StorageProviderFactory.getProvider();
+    const link = await provider.findLink(
+      serviceKey, 
+      quantity ? parseInt(quantity as string) : undefined
+    );
+
+    if (link && link.active) {
+      // Redirecionar para a URL
+      res.redirect(302, link.url);
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'Link não encontrado ou inativo'
+      });
+    }
+  } catch (error) {
+    console.error('Erro ao redirecionar:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
+  }
+});
+
 export default router;

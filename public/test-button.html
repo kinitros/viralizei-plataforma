@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Botão Comprar Agora</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste Botão "Comprar Agora"</h1>
+        <p>Este teste simula exatamente o que acontece quando você clica em um botão "Comprar Agora" no site.</p>
+        
+        <h2>Testes Disponíveis:</h2>
+        
+        <button class="test-button" onclick="testInstagramFollowersBR(1000)">
+            📸 Instagram - 1000 Seguidores BR (Configurado no Supabase)
+        </button>
+        
+        <button class="test-button" onclick="testInstagramFollowersBR(500)">
+            📸 Instagram - 500 Seguidores BR (Não configurado)
+        </button>
+        
+        <button class="test-button" onclick="testTikTokFollowersBR(1000)">
+            🎵 TikTok - 1000 Seguidores BR (Configurado no Supabase)
+        </button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Simular exatamente a função redirectToInstagram.followersBR
+        async function testInstagramFollowersBR(quantity) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>🔄 Simulando clique no botão "Comprar Agora"...</p>';
+            
+            try {
+                // Simular a função redirectToService
+                const config = { platform: 'instagram', type: 'followers', region: 'br' };
+                const serviceKey = `${config.platform}.${config.type}.${config.region}`;
+                
+                resultDiv.innerHTML += `<p>📋 Serviço: ${serviceKey}</p>`;
+                resultDiv.innerHTML += `<p>🔢 Quantidade: ${quantity}</p>`;
+                resultDiv.innerHTML += `<p>🔍 Buscando URL personalizada...</p>`;
+                
+                // Chamar getCustomRedirectUrl (via API)
+                const response = await fetch(`/api/redirect-links/find?serviceKey=${serviceKey}&quantity=${quantity}`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Redirecionamento Funcionando!</h3>
+                            <p><strong>Serviço:</strong> ${serviceKey}</p>
+                            <p><strong>Quantidade:</strong> ${quantity}</p>
+                            <p><strong>URL encontrada no Supabase:</strong> <a href="${result.data.url}" target="_blank">${result.data.url}</a></p>
+                            <p><strong>Descrição:</strong> ${result.data.description}</p>
+                            <p><strong>ID:</strong> ${result.data.id}</p>
+                            <p><em>🎉 O botão abriria esta URL em uma nova aba!</em></p>
+                            <button onclick="window.open('${result.data.url}', '_blank')" class="test-button">
+                                🚀 Abrir Link (Simular Redirecionamento)
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>⚠️ Nenhum Link Configurado</h3>
+                            <p><strong>Serviço:</strong> ${serviceKey}</p>
+                            <p><strong>Quantidade:</strong> ${quantity}</p>
+                            <p>Nenhum link foi encontrado no Supabase para este serviço/quantidade.</p>
+                            <p><em>O sistema mostraria um aviso no console: "Sem URL configurada para ${serviceKey} (qty=${quantity})"</em></p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Erro</h3>
+                        <p><strong>Erro:</strong> ${error.message}</p>
+                        <p>Verifique se o servidor backend está rodando.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Simular TikTok
+        async function testTikTokFollowersBR(quantity) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>🔄 Simulando clique no botão TikTok "Comprar Agora"...</p>';
+            
+            try {
+                const config = { platform: 'tiktok', type: 'followers', region: 'br' };
+                const serviceKey = `${config.platform}.${config.type}.${config.region}`;
+                
+                resultDiv.innerHTML += `<p>📋 Serviço: ${serviceKey}</p>`;
+                resultDiv.innerHTML += `<p>🔢 Quantidade: ${quantity}</p>`;
+                resultDiv.innerHTML += `<p>🔍 Buscando URL personalizada...</p>`;
+                
+                const response = await fetch(`/api/redirect-links/find?serviceKey=${serviceKey}&quantity=${quantity}`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Redirecionamento TikTok Funcionando!</h3>
+                            <p><strong>Serviço:</strong> ${serviceKey}</p>
+                            <p><strong>Quantidade:</strong> ${quantity}</p>
+                            <p><strong>URL encontrada no Supabase:</strong> <a href="${result.data.url}" target="_blank">${result.data.url}</a></p>
+                            <p><strong>Descrição:</strong> ${result.data.description}</p>
+                            <p><strong>ID:</strong> ${result.data.id}</p>
+                            <p><em>🎉 O botão abriria esta URL em uma nova aba!</em></p>
+                            <button onclick="window.open('${result.data.url}', '_blank')" class="test-button">
+                                🚀 Abrir Link (Simular Redirecionamento)
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>⚠️ Nenhum Link Configurado</h3>
+                            <p><strong>Serviço:</strong> ${serviceKey}</p>
+                            <p><strong>Quantidade:</strong> ${quantity}</p>
+                            <p>Nenhum link foi encontrado no Supabase para este serviço/quantidade.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Erro</h3>
+                        <p><strong>Erro:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Testar automaticamente ao carregar
+        window.onload = function() {
+            testInstagramFollowersBR(1000);
+        };
+    </script>
+</body>
+</html>

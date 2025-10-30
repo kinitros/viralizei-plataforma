@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Interface Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teste da Interface Admin - Integração Supabase</h1>
+        
+        <div class="test-section">
+            <h2>1. Teste de Conexão com API</h2>
+            <button onclick="testConnection()">Testar Conexão</button>
+            <div id="connection-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. Teste de Listagem de Links</h2>
+            <button onclick="testListLinks()">Listar Links</button>
+            <div id="list-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. Teste de Criação de Link</h2>
+            <button onclick="testCreateLink()">Criar Link de Teste</button>
+            <div id="create-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>4. Teste de Redirecionamento</h2>
+            <button onclick="testRedirect()">Testar Redirecionamento</button>
+            <div id="redirect-result"></div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = '+Gustavo99!';
+        const API_BASE = '/api';
+
+        async function testConnection() {
+            const resultDiv = document.getElementById('connection-result');
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<div class="success">✅ Conexão OK: ${JSON.stringify(data)}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Erro na conexão: ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Erro: ${error.message}</div>`;
+            }
+        }
+
+        async function testListLinks() {
+            const resultDiv = document.getElementById('list-result');
+            try {
+                const response = await fetch(`${API_BASE}/redirect-links`, {
+                    headers: {
+                        'X-Admin-Password': ADMIN_PASSWORD
+                    }
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Links carregados com sucesso (${data.data.length} links):
+                            <pre>${JSON.stringify(data.data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Erro ao listar: ${JSON.stringify(data)}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Erro: ${error.message}</div>`;
+            }
+        }
+
+        async function testCreateLink() {
+            const resultDiv = document.getElementById('create-result');
+            try {
+                const testLink = {
+                    serviceKey: `test-interface-${Date.now()}`,
+                    quantity: 100,
+                    url: 'https://example.com/test-interface',
+                    description: 'Teste da interface admin'
+                };
+
+                const response = await fetch(`${API_BASE}/redirect-links`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Password': ADMIN_PASSWORD
+                    },
+                    body: JSON.stringify(testLink)
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Link criado com sucesso:
+                            <pre>${JSON.stringify(data.data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Erro ao criar: ${JSON.stringify(data)}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Erro: ${error.message}</div>`;
+            }
+        }
+
+        async function testRedirect() {
+            const resultDiv = document.getElementById('redirect-result');
+            try {
+                const response = await fetch(`${API_BASE}/redirect-links/redirect/test-final-supabase?quantity=75`, {
+                    method: 'GET',
+                    redirect: 'manual'
+                });
+                
+                if (response.status === 302) {
+                    const location = response.headers.get('Location');
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Redirecionamento funcionando!<br>
+                            Status: ${response.status}<br>
+                            Redirecionando para: <a href="${location}" target="_blank">${location}</a>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Erro no redirecionamento: Status ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Erro: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

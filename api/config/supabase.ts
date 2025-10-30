@@ -42,15 +42,26 @@ export interface Database {
 let supabaseClient: SupabaseClient<Database> | null = null;
 
 export function getSupabaseClient(): SupabaseClient<Database> | null {
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-    console.warn('Supabase não configurado: SUPABASE_URL ou SUPABASE_ANON_KEY ausentes');
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.warn('Supabase não configurado: SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY ausentes');
     return null;
   }
 
   if (!supabaseClient) {
+    console.log('Criando cliente Supabase com:', {
+      url: process.env.SUPABASE_URL,
+      key: process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 20) + '...'
+    });
+    
     supabaseClient = createClient<Database>(
       process.env.SUPABASE_URL,
-      process.env.SUPABASE_ANON_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
     );
   }
 

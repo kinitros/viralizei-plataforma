@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Redirecionamento Supabase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste de Integração Supabase</h1>
+        <p>Este teste verifica se o redirecionamento dos botões "Comprar Agora" está funcionando com o Supabase.</p>
+        
+        <h2>Testes Disponíveis:</h2>
+        
+        <button class="test-button" onclick="testRedirect('instagram.followers.br', 1000)">
+            📸 Instagram - 1000 Seguidores BR
+        </button>
+        
+        <button class="test-button" onclick="testRedirect('instagram.followers.br', 500)">
+            📸 Instagram - 500 Seguidores BR
+        </button>
+        
+        <button class="test-button" onclick="testRedirect('tiktok.followers.br', 1000)">
+            🎵 TikTok - 1000 Seguidores BR
+        </button>
+        
+        <button class="test-button" onclick="testApiDirectly()">
+            🔧 Testar API Diretamente
+        </button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Função para testar redirecionamento
+        async function testRedirect(serviceKey, quantity) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>🔄 Testando redirecionamento...</p>';
+            
+            try {
+                // Simular a função getCustomRedirectUrl
+                const response = await fetch(`http://localhost:3001/api/redirect-links/find?serviceKey=${serviceKey}&quantity=${quantity}`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Sucesso!</h3>
+                            <p><strong>Serviço:</strong> ${serviceKey}</p>
+                            <p><strong>Quantidade:</strong> ${quantity}</p>
+                            <p><strong>URL encontrada:</strong> <a href="${result.data.url}" target="_blank">${result.data.url}</a></p>
+                            <p><strong>Descrição:</strong> ${result.data.description}</p>
+                            <p><em>O redirecionamento funcionaria corretamente!</em></p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>⚠️ Link não encontrado</h3>
+                            <p><strong>Serviço:</strong> ${serviceKey}</p>
+                            <p><strong>Quantidade:</strong> ${quantity}</p>
+                            <p>Nenhum link configurado no Supabase para este serviço/quantidade.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Erro</h3>
+                        <p><strong>Erro:</strong> ${error.message}</p>
+                        <p>Verifique se o servidor backend está rodando na porta 3001.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Função para testar API diretamente
+        async function testApiDirectly() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>🔄 Testando conexão com API...</p>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/redirect-links/find?serviceKey=test');
+                const result = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        <h3>✅ API Funcionando!</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Resposta:</strong> ${JSON.stringify(result, null, 2)}</p>
+                        <p>A conexão com o Supabase está funcionando.</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Erro na API</h3>
+                        <p><strong>Erro:</strong> ${error.message}</p>
+                        <p>Verifique se o servidor backend está rodando.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Testar automaticamente ao carregar a página
+        window.onload = function() {
+            testApiDirectly();
+        };
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import { StorageProviderFactory } from "../providers/StorageProviderFactory";
-import { RedirectLink } from "../types/RedirectLink";
+import { RedirectLink } from "../providers/StorageProvider";
 import dotenv from 'dotenv';
 
 // Carregar variáveis de ambiente

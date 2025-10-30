@@ -201,25 +201,25 @@ const Home: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <h1 className="text-center sm:text-left text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                   Viralize seu
                   <span className="block bg-gradient-to-r from-viral to-yellow-400 bg-clip-text text-transparent">
                     Perfil Agora!
                   </span>
                 </h1>
-                <p className="text-lg md:text-xl mb-8 text-blue-100 max-w-2xl">
+                <p className="text-center sm:text-left text-lg md:text-xl mb-8 text-blue-100 max-w-2xl">
                   Impulsione suas redes sociais rapidamente com nossa plataforma de serviços.
                 </p>
               </motion.div>
 
               {/* Features List */}
               <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto"
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto text-center sm:text-left"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center sm:justify-start space-x-3">
                   <div className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -227,7 +227,7 @@ const Home: React.FC = () => {
                   </div>
                   <span className="text-blue-100 font-medium">Não precisa seguir</span>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center sm:justify-start space-x-3">
                   <div className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -235,7 +235,7 @@ const Home: React.FC = () => {
                   </div>
                   <span className="text-blue-100 font-medium">100% seguro e sigiloso</span>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center sm:justify-start space-x-3">
                   <div className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -243,7 +243,7 @@ const Home: React.FC = () => {
                   </div>
                   <span className="text-blue-100 font-medium">Não precisa de senha</span>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center sm:justify-start space-x-3">
                   <div className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -253,6 +253,31 @@ const Home: React.FC = () => {
                 </div>
               </motion.div>
 
+              {/* Call to Action Text with Arrow */}
+              <motion.div
+                className="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-2 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              >
+                <p className="text-blue-100 text-sm md:text-base font-medium text-center sm:text-left">
+                  Clique no botão abaixo para testar
+                </p>
+                <motion.div
+                  className="flex justify-center"
+                  animate={{ y: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <svg 
+                    className="w-6 h-6 text-viral" 
+                    fill="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 16l-6-6h12l-6 6z"/>
+                  </svg>
+                </motion.div>
+              </motion.div>
+
               {/* CTA Button */}
               <motion.div
                 className="mb-8"
@@ -260,15 +285,15 @@ const Home: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <Link to="/todos-os-servicos">
+                <a href="https://wa.me/31983584949?text=50%20Seguidores%20no%20Instagram%20por%20apenas%20R$5,90" target="_blank" rel="noopener noreferrer">
                   <motion.button
                     className="bg-viral hover:bg-viral-600 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-2xl hover:shadow-viral/50 transition-all"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    🚀 Começar Agora - Grátis!
+                    50 Seguidores no Instagram por apenas R$5,90
                   </motion.button>
-                </Link>
+                </a>
               </motion.div>
 
               {/* Trust Section */}

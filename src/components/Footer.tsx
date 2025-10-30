@@ -141,7 +141,7 @@ const Footer: React.FC = () => {
                 </motion.button>
                 <div className="text-sm text-gray-300">
                   <p>📧 suporte@viralizei.com.br</p>
-                  <p>📱 WhatsApp: (11) 99999-9999</p>
+                  <p>📱 WhatsApp: (31) 98358-4949</p>
                   <p>🕒 Seg-Sex: 8h às 18h</p>
                 </div>
               </div>

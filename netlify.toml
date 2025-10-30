@@ -3,16 +3,16 @@
   command = "npm run build"
 
 [context.production.environment]
-  VITE_WHATSAPP_NUMBER = "5511999998888"
-  VITE_WHATSAPP_MESSAGE = "Olá! Como posso ajudá-lo?"
+  VITE_WHATSAPP_NUMBER = "31983584949"
+  VITE_WHATSAPP_MESSAGE = "Olá, tenho uma dúvida."
 
 [context.deploy-preview.environment]
-  VITE_WHATSAPP_NUMBER = "5511999998888"
-  VITE_WHATSAPP_MESSAGE = "Olá! Como posso ajudá-lo?"
+  VITE_WHATSAPP_NUMBER = "31983584949"
+  VITE_WHATSAPP_MESSAGE = "Olá, tenho uma dúvida."
 
 [context.branch-deploy.environment]
-  VITE_WHATSAPP_NUMBER = "5511999998888"
-  VITE_WHATSAPP_MESSAGE = "Olá! Como posso ajudá-lo?"
+  VITE_WHATSAPP_NUMBER = "31983584949"
+  VITE_WHATSAPP_MESSAGE = "Olá, tenho uma dúvida."
 
 # Configurações de redirecionamento para SPA
 [[redirects]]

@@ -29,12 +29,14 @@
       ]
     },
     "types": [
-      "node",
-      "express"
+      "node"
     ]
   },
   "include": [
-    "src",
-    "api"
+    "src"
+  ],
+  "exclude": [
+    "api",
+    "netlify/functions"
   ]
 }

@@ -54,7 +54,7 @@ const FacebookViews: React.FC = () => {
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"
               onBuy={() => {
-                redirectToService('facebook.views', pkg.qty);
+                redirectToService({ platform: 'facebook', type: 'views' }, pkg.qty);
               }}
             />
           </motion.div>

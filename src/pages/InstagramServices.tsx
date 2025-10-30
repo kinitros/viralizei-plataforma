@@ -92,7 +92,7 @@ const InstagramServices: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="flex items-center justify-between bg-white rounded-xl shadow-sm border border-gray-200 p-4"
+              className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-col md:flex-row md:items-center md:justify-between"
             >
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-pink-500 to-purple-600 text-white">
@@ -115,7 +115,7 @@ const InstagramServices: React.FC = () => {
 
               <motion.a
                 href={service.ctaLink ?? '#'}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow w-full md:w-auto mt-4 md:mt-0 text-center"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >

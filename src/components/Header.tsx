@@ -67,6 +67,8 @@ const socialMenus = {
 const Header: React.FC = () => {
   const [language, setLanguage] = useState<'pt' | 'en'>('pt');
   const [achievements, setAchievements] = useState<AchievementBadge[]>([]);
+  const [logoStep, setLogoStep] = useState(0);
+  const logoCandidates = ['/brand/gramprovider.png', '/gramprovider-logo.png'];
 
   const achievementTemplates = [
     { text: '50 Seguidores Virais Alcançados', icon: 'users' },
@@ -155,25 +157,31 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" aria-label="Página inicial" className="flex items-center space-x-3 group">
             <motion.div
-              className="p-2 bg-viral rounded-lg"
-              whileHover={{ scale: 1.05, rotate: 5 }}
+              className="p-1 rounded-lg"
+              whileHover={{ scale: 1.05, rotate: 1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Rocket className="h-6 w-6 text-white" />
+              {logoStep >= logoCandidates.length ? (
+                <Rocket className="h-8 w-8 text-primary" />
+              ) : (
+                <img
+                  src={logoCandidates[logoStep]}
+                  alt="Gram Provider"
+                  className="h-auto w-auto max-h-16 md:max-h-20 max-w-[200px] object-contain"
+                  onError={() => setLogoStep(logoStep + 1)}
+                />
+              )}
             </motion.div>
             <div>
-              <h1 className="text-2xl font-bold text-primary group-hover:text-primary-600 transition-colors">
-                Viralizei
-              </h1>
               <div className="flex items-center space-x-1 text-xs text-gray-500">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <span>{texts[language].rating}</span>
+                <span className="hidden md:inline">{texts[language].rating}</span>
               </div>
             </div>
           </Link>

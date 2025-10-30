@@ -163,7 +163,7 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
       
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.05)_0%,rgba(0,0,0,0)_70%)] pointer-events-none" />
         <div className="absolute inset-0 bg-black/10"></div>
@@ -192,7 +192,7 @@ const Home: React.FC = () => {
             />
           ))}
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 py-20">
+        <div className="relative max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Conteúdo Principal */}
             <div className="text-white">
@@ -329,7 +329,7 @@ const Home: React.FC = () => {
 
           {/* Texto explicativo da animação */}
           <motion.div
-            className="text-center mt-12"
+            className="text-center mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1 }}

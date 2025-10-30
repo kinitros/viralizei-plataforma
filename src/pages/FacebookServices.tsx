@@ -65,7 +65,7 @@ const FacebookServices: React.FC = () => {
         {services.map((item, idx) => (
           <motion.div
             key={idx}
-            className="bg-white rounded-xl shadow p-6 flex items-center justify-between"
+            className="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row md:items-center md:justify-between"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: idx * 0.05 }}
@@ -84,7 +84,7 @@ const FacebookServices: React.FC = () => {
             </div>
             <motion.a
               href={item.ctaLink || '#'}
-              className="bg-primary text-white px-4 py-2 rounded-lg font-semibold"
+              className="bg-primary text-white px-4 py-2 rounded-lg font-semibold w-full md:w-auto mt-4 md:mt-0 text-center"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >

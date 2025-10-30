@@ -1,6 +1,6 @@
 import React from 'react';
 import { Users, Heart, MessageCircle, Eye, Share, Rocket } from 'lucide-react';
-import kwaiLogoWhite from '@/assets/kwai-logo-branco.png';
+import kwaiLogoWhite from '../assets/kwai-logo-branco.png';
 
 interface SocialIconProps {
   platform: string;

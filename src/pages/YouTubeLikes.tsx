@@ -51,7 +51,7 @@ const YouTubeLikes: React.FC = () => {
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('youtube.likes', pkg.qty));
+                import('@/lib/serviceRedirect').then(({ redirectToYouTube }) => redirectToYouTube.likes(pkg.qty));
               }}
             />
           </motion.div>

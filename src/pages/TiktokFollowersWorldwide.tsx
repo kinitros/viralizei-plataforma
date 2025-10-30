@@ -65,9 +65,8 @@ const TiktokFollowersWorldwide: React.FC = () => {
               discountLabel={pkg.discountPct ? `${Math.round(pkg.discountPct * 100)}% OFF` : undefined}
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"
-              headerBgClass="bg-black"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('tiktok.followers.world', pkg.qty));
+                import('@/lib/serviceRedirect').then(({ redirectToTikTok }) => redirectToTikTok.followersWorld(pkg.qty));
               }}
             />
           </motion.div>

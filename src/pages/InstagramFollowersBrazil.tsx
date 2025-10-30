@@ -57,8 +57,9 @@ const InstagramFollowersBrazil: React.FC = () => {
               originalBRL={formatOriginalFromDiscount(pkg.priceBRL, pkg.discountPct)}
               discountLabel={pkg.discountPct ? `${Math.round(pkg.discountPct * 100)}% OFF` : undefined}
               buttonText="Comprar Agora"
-              headerBgClass="bg-green-600"
-              onBuy={async () => await redirectToInstagram.followersBR(pkg.qty)}
+              onBuy={() => {
+                import('@/lib/serviceRedirect').then(({ redirectToInstagram }) => redirectToInstagram.followersBR(pkg.qty));
+              }}
             />
           </motion.div>
         ))}

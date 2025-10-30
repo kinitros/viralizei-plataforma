@@ -62,9 +62,8 @@ const TiktokLikesWorldwide: React.FC = () => {
               originalBRL={pkg.discountPct ? computeOriginalFromDiscount(pkg.priceBRL, pkg.discountPct) : undefined}
               discountLabel={pkg.discountPct ? `${pkg.discountPct}% OFF` : undefined}
               buttonText="Comprar Agora"
-              headerBgClass="bg-black"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('tiktok.likes.world', pkg.qty));
+                import('@/lib/serviceRedirect').then(({ redirectToTikTok }) => redirectToTikTok.likesWorld(pkg.qty));
               }}
             />
           </motion.div>

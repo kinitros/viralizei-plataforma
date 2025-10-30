@@ -63,7 +63,7 @@ const TiktokLikesBrazil: React.FC = () => {
               discountLabel={pkg.discountPct ? `${pkg.discountPct}% OFF` : undefined}
               buttonText="Comprar Agora"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('tiktok.likes.br', pkg.qty));
+                import('@/lib/serviceRedirect').then(({ redirectToTikTok }) => redirectToTikTok.likesBR(pkg.qty));
               }}
             />
           </motion.div>

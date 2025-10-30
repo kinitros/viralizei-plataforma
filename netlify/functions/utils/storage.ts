@@ -17,6 +17,7 @@ export interface StorageProvider {
   updateLink(id: string, data: Partial<RedirectLink>): Promise<RedirectLink | null>;
   deleteLink(id: string): Promise<boolean>;
   findLinkByServiceKey(serviceKey: string): Promise<RedirectLink | null>;
+  findLink(serviceKey: string, quantity?: number): Promise<RedirectLink | null>;
 }
 
 // Simple memory storage for Netlify Functions
@@ -65,6 +66,13 @@ class MemoryStorageProvider implements StorageProvider {
 
   async findLinkByServiceKey(serviceKey: string): Promise<RedirectLink | null> {
     return this.links.find(link => link.serviceKey === serviceKey) || null;
+  }
+
+  async findLink(serviceKey: string, quantity?: number): Promise<RedirectLink | null> {
+    return this.links.find(link => 
+      link.serviceKey === serviceKey && 
+      (quantity === undefined || link.quantity === quantity)
+    ) || null;
   }
 }
 

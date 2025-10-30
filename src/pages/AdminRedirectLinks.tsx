@@ -22,16 +22,40 @@ interface FormData {
 }
 
 const PREDEFINED_SERVICES = [
+  // ===== INSTAGRAM =====
   { key: 'instagram.followers.br', label: 'Instagram - Seguidores Brasil' },
   { key: 'instagram.followers.world', label: 'Instagram - Seguidores Mundial' },
-  { key: 'instagram.likes', label: 'Instagram - Curtidas' },
-  { key: 'tiktok.followers', label: 'TikTok - Seguidores' },
+  { key: 'instagram.likes.br', label: 'Instagram - Curtidas Brasil' },
+  { key: 'instagram.likes.world', label: 'Instagram - Curtidas Mundial' },
+  { key: 'instagram.views.reels', label: 'Instagram - Visualizações Reels' },
+  { key: 'instagram.views.stories', label: 'Instagram - Visualizações Stories' },
+  
+  // ===== TIKTOK =====
+  { key: 'tiktok.followers.br', label: 'TikTok - Seguidores Brasil' },
+  { key: 'tiktok.followers.world', label: 'TikTok - Seguidores Mundial' },
+  { key: 'tiktok.likes.br', label: 'TikTok - Curtidas Brasil' },
+  { key: 'tiktok.likes.world', label: 'TikTok - Curtidas Mundial' },
   { key: 'tiktok.views', label: 'TikTok - Visualizações' },
+  
+  // ===== YOUTUBE =====
   { key: 'youtube.subscribers', label: 'YouTube - Inscritos' },
+  { key: 'youtube.likes', label: 'YouTube - Curtidas' },
   { key: 'youtube.views', label: 'YouTube - Visualizações' },
-  { key: 'facebook.likes', label: 'Facebook - Curtidas' },
+  
+  // ===== FACEBOOK =====
+  { key: 'facebook.followers.world', label: 'Facebook - Seguidores' },
+  { key: 'facebook.likes.world', label: 'Facebook - Curtidas' },
+  { key: 'facebook.views', label: 'Facebook - Visualizações' },
+  
+  // ===== TWITTER/X =====
   { key: 'twitter.followers', label: 'Twitter/X - Seguidores' },
-  { key: 'kwai.followers', label: 'Kwai - Seguidores' },
+  { key: 'twitter.likes', label: 'Twitter/X - Curtidas' },
+  { key: 'twitter.views', label: 'Twitter/X - Visualizações' },
+  
+  // ===== KWAI =====
+  { key: 'kwai.followers.br', label: 'Kwai - Seguidores Brasil' },
+  { key: 'kwai.likes.br', label: 'Kwai - Curtidas Brasil' },
+  { key: 'kwai.views', label: 'Kwai - Visualizações' },
 ];
 
 export default function AdminRedirectLinks() {

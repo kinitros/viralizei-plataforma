@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
 import FollowersSwitch from '@/components/FollowersSwitch';
+import { redirectToInstagram } from '@/lib/serviceRedirect';
 
 interface Package {
   qty: number
@@ -76,7 +77,7 @@ const InstagramLikesWorldwide: React.FC = () => {
               discountLabel={pkg.discountPct ? `${pkg.discountPct}% OFF` : undefined}
               buttonText="Comprar Agora"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('instagram.likes.world', pkg.qty));
+                redirectToInstagram.likesWorld(pkg.qty);
               }}
             />
           </motion.div>

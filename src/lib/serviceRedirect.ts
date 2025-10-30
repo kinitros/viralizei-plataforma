@@ -1,4 +1,3 @@
-import { openCheckout } from './checkout';
 import { getCustomRedirectUrl } from './serviceConfig';
 
 // Tipos de serviços disponíveis
@@ -85,38 +84,31 @@ export async function redirectToService(
   customUrl?: string
 ): Promise<void> {
   try {
-    // Se uma URL personalizada foi fornecida, redireciona diretamente
     if (customUrl) {
       window.open(customUrl, '_blank');
       return;
     }
-    
-    // Gera a chave do serviço
+
     const serviceKey = generateServiceKey(config);
-    
-    // Verifica se existe uma URL personalizada configurada (da API remota ou configuração local)
+
     const configuredUrl = await getCustomRedirectUrl(serviceKey, quantity);
     if (configuredUrl) {
       window.open(configuredUrl, '_blank');
       return;
     }
-    
-    // Verifica se o serviço está mapeado no sistema padrão
+
     if (!SERVICE_KEY_MAP[serviceKey]) {
       console.warn(`Serviço não mapeado: ${serviceKey}`);
-      alert(`Serviço ${serviceKey} não está disponível no momento. Entre em contato com o suporte.`);
       return;
     }
-    
-    // Usa a função openCheckout existente
-    await openCheckout(SERVICE_KEY_MAP[serviceKey], quantity);
-    
+
+    // Sem fallback de checkout: apenas loga aviso quando não houver URL configurada
+    console.warn(`Sem URL configurada para ${serviceKey} (qty=${quantity}). Configure via Admin Redirect Links ou variáveis de ambiente.`);
+    return;
+
   } catch (error) {
     console.error('Erro no redirecionamento:', error);
-    // Em caso de erro, usar sistema padrão
-    if (config.customKey || SERVICE_KEY_MAP[generateServiceKey(config)]) {
-      openCheckout(SERVICE_KEY_MAP[generateServiceKey(config)], quantity);
-    }
+    // Removido fallback para openCheckout; manter só log de erro
   }
 }
 

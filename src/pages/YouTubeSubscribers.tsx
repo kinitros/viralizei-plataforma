@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
+import { redirectToYouTube } from '@/lib/serviceRedirect';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean; }
 
@@ -51,7 +52,7 @@ const YouTubeSubscribers: React.FC = () => {
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('youtube.subscribers', pkg.qty));
+                redirectToYouTube.subscribers(pkg.qty);
               }}
             />
           </motion.div>

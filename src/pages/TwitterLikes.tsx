@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
+import { redirectToService } from '@/lib/serviceRedirect';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean; }
 
@@ -50,7 +51,7 @@ const TwitterLikes: React.FC = () => {
               discountLabel={pkg.discountPct ? `${Math.round(pkg.discountPct * 100)}% OFF` : undefined}
               buttonText="Comprar Agora"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('twitter.likes', pkg.qty));
+                redirectToService({ platform: 'twitter', type: 'likes' }, pkg.qty);
               }}
             />
           </motion.div>

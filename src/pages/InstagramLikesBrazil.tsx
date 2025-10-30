@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
 import FollowersSwitch from '@/components/FollowersSwitch';
+import { redirectToInstagram } from '@/lib/serviceRedirect';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean }
 
@@ -72,7 +73,7 @@ const InstagramLikesBrazil: React.FC = () => {
               buttonText="Comprar Agora"
               headerBgClass="bg-green-600"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('instagram.likes.br', pkg.qty));
+                redirectToInstagram.likesBR(pkg.qty);
               }}
             />
           </motion.div>

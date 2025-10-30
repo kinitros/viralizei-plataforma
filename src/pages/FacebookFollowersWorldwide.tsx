@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
+import { redirectToService } from '@/lib/serviceRedirect';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean; }
 
@@ -51,7 +52,7 @@ const FacebookFollowersWorldwide: React.FC = () => {
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('facebook.followers.world', pkg.qty));
+                redirectToService({ platform: 'facebook', type: 'followers', region: 'world' }, pkg.qty);
               }}
             />
           </motion.div>

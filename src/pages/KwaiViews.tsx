@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
+import { redirectToService } from '@/lib/serviceRedirect';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean; }
 
@@ -62,7 +63,7 @@ const KwaiViews: React.FC = () => {
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"
               onBuy={() => {
-                import('@/lib/checkout').then(({ openCheckout }) => openCheckout('kwai.views', pkg.qty));
+                redirectToService({ platform: 'kwai', type: 'views' }, pkg.qty);
               }}
             />
           </motion.div>

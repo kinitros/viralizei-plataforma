@@ -1,6 +1,20 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { requireAdmin, createErrorResponse, createSuccessResponse, handleCors } from './utils/auth.js';
-import { StorageProviderFactory } from './utils/storage.js';
+
+// Simplified storage for Netlify Functions
+interface RedirectLink {
+  id: string;
+  serviceKey: string;
+  quantity?: number;
+  url: string;
+  description?: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// In-memory storage as fallback
+let memoryStorage: RedirectLink[] = [];
 
 const handler: Handler = async (event: HandlerEvent) => {
   // Handle CORS preflight
@@ -57,10 +71,7 @@ async function handleGetAllLinks(event: HandlerEvent) {
   }
 
   try {
-    const provider = StorageProviderFactory.getProvider();
-    const links = await provider.getAllLinks();
-    
-    return createSuccessResponse({ data: links });
+    return createSuccessResponse({ data: memoryStorage });
   } catch (error) {
     console.error('Erro ao buscar links:', error);
     return createErrorResponse(500, 'Erro interno do servidor');
@@ -92,22 +103,27 @@ async function handleCreateLink(event: HandlerEvent) {
       return createErrorResponse(400, 'URL inválida');
     }
 
-    const provider = StorageProviderFactory.getProvider();
-    
     // Verificar se já existe um link para este serviço e quantidade
-    const existingLink = await provider.findLink(serviceKey, quantity);
+    const existingLink = memoryStorage.find(link => 
+      link.serviceKey === serviceKey && link.quantity === quantity
+    );
 
     if (existingLink) {
       return createErrorResponse(409, 'Já existe um link configurado para este serviço e quantidade');
     }
 
-    const newLink = await provider.createLink({
+    const newLink: RedirectLink = {
+      id: Date.now().toString(),
       serviceKey,
       quantity: quantity || undefined,
       url,
       description: description || '',
-      active: true
-    });
+      active: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    memoryStorage.push(newLink);
 
     return createSuccessResponse({ 
       message: 'Link criado com sucesso',
@@ -141,19 +157,23 @@ async function handleUpdateLink(event: HandlerEvent, id: string) {
       }
     }
 
-    const provider = StorageProviderFactory.getProvider();
+    const linkIndex = memoryStorage.findIndex(link => link.id === id);
     
-    const updatedLink = await provider.updateLink(id, {
+    if (linkIndex === -1) {
+      return createErrorResponse(404, 'Link não encontrado');
+    }
+
+    const updatedLink = {
+      ...memoryStorage[linkIndex],
       ...(serviceKey && { serviceKey }),
       ...(quantity !== undefined && { quantity }),
       ...(url && { url }),
       ...(description !== undefined && { description }),
-      ...(active !== undefined && { active })
-    });
+      ...(active !== undefined && { active }),
+      updatedAt: new Date().toISOString()
+    };
 
-    if (!updatedLink) {
-      return createErrorResponse(404, 'Link não encontrado');
-    }
+    memoryStorage[linkIndex] = updatedLink;
 
     return createSuccessResponse({
       message: 'Link atualizado com sucesso',
@@ -172,12 +192,14 @@ async function handleDeleteLink(event: HandlerEvent, id: string) {
   }
 
   try {
-    const provider = StorageProviderFactory.getProvider();
-    const deletedLink = await provider.deleteLink(id);
+    const linkIndex = memoryStorage.findIndex(link => link.id === id);
 
-    if (!deletedLink) {
+    if (linkIndex === -1) {
       return createErrorResponse(404, 'Link não encontrado');
     }
+
+    const deletedLink = memoryStorage[linkIndex];
+    memoryStorage.splice(linkIndex, 1);
 
     return createSuccessResponse({
       message: 'Link deletado com sucesso',
@@ -198,10 +220,10 @@ async function handleFindLink(event: HandlerEvent) {
       return createErrorResponse(400, 'serviceKey é obrigatório');
     }
 
-    const provider = StorageProviderFactory.getProvider();
-    const link = await provider.findLink(
-      serviceKey as string, 
-      quantity ? parseInt(quantity as string) : undefined
+    const link = memoryStorage.find(link => 
+      link.serviceKey === serviceKey && 
+      (quantity ? link.quantity === parseInt(quantity as string) : !link.quantity) &&
+      link.active
     );
 
     if (link) {

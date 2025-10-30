@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
 import FollowersSwitch from '@/components/FollowersSwitch';
+import { getHeaderBgClass } from '@/lib/utils';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number }
 
@@ -61,6 +62,7 @@ const TiktokLikesWorldwide: React.FC = () => {
               priceBRL={pkg.priceBRL}
               originalBRL={pkg.discountPct ? computeOriginalFromDiscount(pkg.priceBRL, pkg.discountPct) : undefined}
               discountLabel={pkg.discountPct ? `${pkg.discountPct}% OFF` : undefined}
+              headerBgClass={getHeaderBgClass('tiktok', false)}
               buttonText="Comprar Agora"
               onBuy={() => {
                 import('@/lib/serviceRedirect').then(({ redirectToTikTok }) => redirectToTikTok.likesWorld(pkg.qty));

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
 import { redirectToService } from '@/lib/serviceRedirect';
+import { getHeaderBgClass } from '@/lib/utils';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean; }
 
@@ -58,7 +59,7 @@ const KwaiFollowersBrazil: React.FC = () => {
               priceBRL={pkg.priceBRL}
               originalBRL={formatOriginalFromDiscount(pkg.priceBRL, pkg.discountPct)}
               discountLabel={pkg.discountPct ? `${Math.round(pkg.discountPct * 100)}% OFF` : undefined}
-              headerBgClass="bg-orange-600"
+              headerBgClass={getHeaderBgClass('kwai', true)}
               discountBadgeClass="bg-white text-red-600 border border-red-600"
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"

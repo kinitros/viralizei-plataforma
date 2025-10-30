@@ -4,6 +4,7 @@ import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
 import FollowersSwitch from '@/components/FollowersSwitch';
 import { redirectToInstagram } from '@/lib/serviceRedirect';
+import { getHeaderBgClass } from '@/lib/utils';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean; }
 
@@ -56,6 +57,7 @@ const InstagramFollowersBrazil: React.FC = () => {
               priceBRL={pkg.priceBRL}
               originalBRL={formatOriginalFromDiscount(pkg.priceBRL, pkg.discountPct)}
               discountLabel={pkg.discountPct ? `${Math.round(pkg.discountPct * 100)}% OFF` : undefined}
+              headerBgClass={getHeaderBgClass('instagram', true)}
               buttonText="Comprar Agora"
               onBuy={() => {
                 import('@/lib/serviceRedirect').then(({ redirectToInstagram }) => redirectToInstagram.followersBR(pkg.qty));

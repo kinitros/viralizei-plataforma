@@ -4,6 +4,7 @@ import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
 import FollowersSwitch from '@/components/FollowersSwitch';
 import { redirectToInstagram } from '@/lib/serviceRedirect';
+import { getHeaderBgClass } from '@/lib/utils';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean }
 
@@ -71,7 +72,7 @@ const InstagramLikesBrazil: React.FC = () => {
               originalBRL={pkg.discountPct ? computeOriginalFromDiscount(pkg.priceBRL, pkg.discountPct) : undefined}
               discountLabel={pkg.discountPct ? `${pkg.discountPct}% OFF` : undefined}
               buttonText="Comprar Agora"
-              headerBgClass="bg-green-600"
+              headerBgClass={getHeaderBgClass('instagram', true)}
               onBuy={() => {
                 redirectToInstagram.likesBR(pkg.qty);
               }}

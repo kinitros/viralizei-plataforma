@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
+import { getHeaderBgClass } from '@/lib/utils';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number }
 
@@ -49,6 +50,7 @@ const TiktokViews: React.FC = () => {
               priceBRL={pkg.priceBRL}
               originalBRL={pkg.discountPct ? computeOriginalFromDiscount(pkg.priceBRL, pkg.discountPct) : undefined}
               discountLabel={pkg.discountPct ? `${pkg.discountPct}% OFF` : undefined}
+              headerBgClass={getHeaderBgClass('tiktok', false)}
               buttonText="Comprar Agora"
               onBuy={() => {
                 import('@/lib/serviceRedirect').then(({ redirectToTikTok }) => redirectToTikTok.views(pkg.qty));

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { SocialIcon } from '@/components/SocialIcons';
 import ServicePriceCard from '@/components/ServicePriceCard';
 import { redirectToService } from '@/lib/serviceRedirect';
+import { getHeaderBgClass } from '@/lib/utils';
 
 interface Package { qty: number; priceBRL: number; discountPct?: number; bestChoice?: boolean; }
 
@@ -49,10 +50,11 @@ const FacebookViews: React.FC = () => {
               priceBRL={pkg.priceBRL}
               originalBRL={formatOriginalFromDiscount(pkg.priceBRL, pkg.discountPct)}
               discountLabel={pkg.discountPct ? `${Math.round(pkg.discountPct * 100)}% OFF` : undefined}
+              headerBgClass={getHeaderBgClass('facebook', false)}
               bestChoice={pkg.bestChoice}
               buttonText="Comprar Agora"
               onBuy={() => {
-                redirectToService({ platform: 'facebook', type: 'views' }, pkg.qty);
+                redirectToService('facebook.views', pkg.qty);
               }}
             />
           </motion.div>

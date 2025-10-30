@@ -32,7 +32,7 @@ const ServicePriceCard: React.FC<ServicePriceCardProps> = ({
   bestChoice,
   onBuy,
   buttonText = 'Buy Now',
-  headerBgClass = 'bg-pink-600',
+  headerBgClass = 'bg-green-600',
   discountBadgeClass,
 }) => {return (
     <motion.div

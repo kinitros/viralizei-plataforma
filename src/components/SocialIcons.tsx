@@ -1,6 +1,8 @@
 import React from 'react';
 import { Users, Heart, MessageCircle, Eye, Share, Rocket } from 'lucide-react';
-import kwaiLogoWhite from '../assets/kwai-logo-branco.png';
+
+// Importa a logo do Kwai diretamente do public
+import kwaiLogoWhite from '/kwai-logo-branco.png';
 
 interface SocialIconProps {
   platform: string;
@@ -96,7 +98,6 @@ const SocialIcon: React.FC<SocialIconProps> = ({ platform, size = 24, className 
       return (
         <img src={kwaiLogoWhite} alt="Kwai" style={iconStyle} className={className} />
       );
-    
     default:
       return (
         <svg style={iconStyle} className={className} viewBox="0 0 24 24" fill="currentColor">

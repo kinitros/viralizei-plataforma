@@ -1,10 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import * as fs from 'fs';
+import * as path from 'path';
 
-// Use import.meta.url for ES modules compatibility
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Fallback for serverless environments that don't support __dirname
+const __dirname = process.cwd();
 
 const storePath = path.join(__dirname, '..', 'data', 'checkout.json');
 

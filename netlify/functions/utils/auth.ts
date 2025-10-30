@@ -6,15 +6,8 @@ export interface AuthResult {
 }
 
 export function requireAdmin(event: HandlerEvent): AuthResult {
-  const configured = process.env.ADMIN_REDIRECT_PASSWORD || process.env.ADMIN_PASSWORD;
+  const configured = process.env.ADMIN_REDIRECT_PASSWORD || process.env.ADMIN_PASSWORD || '+Gustavo99!';
   
-  if (!configured) {
-    return {
-      isAuthorized: false,
-      error: 'Senha admin não configurada (ADMIN_REDIRECT_PASSWORD ou ADMIN_PASSWORD)'
-    };
-  }
-
   // Verificar header de autorização
   const authHeader = event.headers['x-admin-password'] || event.headers['X-Admin-Password'];
   

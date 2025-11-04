@@ -85,7 +85,9 @@ export async function redirectToService(
 ): Promise<void> {
   try {
     if (customUrl) {
-      window.open(customUrl, '_blank');
+      console.info('[redirectToService] Navegando para URL customizada:', customUrl);
+      // Usar navegação direta para evitar bloqueio de pop-up em mobile
+      window.location.assign(customUrl);
       return;
     }
 
@@ -93,7 +95,9 @@ export async function redirectToService(
 
     const configuredUrl = await getCustomRedirectUrl(serviceKey, quantity);
     if (configuredUrl) {
-      window.open(configuredUrl, '_blank');
+      console.info('[redirectToService] Navegando para URL configurada:', configuredUrl);
+      // Usar navegação direta para evitar bloqueio de pop-up em mobile
+      window.location.assign(configuredUrl);
       return;
     }
 

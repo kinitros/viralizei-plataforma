@@ -80,26 +80,18 @@ const Footer: React.FC = () => {
             {/* Company Info */}
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-viral rounded-lg">
-                  <Rocket className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold">Viralizei</h3>
+                <img
+                  src="/gramprovider-logo.png"
+                  alt="GramProvider"
+                  className="h-10 md:h-12 w-auto object-contain"
+                />
+                <h3 className="text-2xl font-bold">GramProvider</h3>
               </div>
               <p className="text-gray-300 text-sm leading-relaxed">
                 A maior plataforma de crescimento viral orgânico do Brasil. 
                 Conectamos você com influenciadores reais para crescimento autêntico.
               </p>
-              <div className="flex items-center space-x-2 text-sm text-gray-400">
-                <span>🏆 Destaque no</span>
-                <a 
-                  href="https://finance.yahoo.com/news/viralizei-revoluciona-marketing-digital-brasil-120000123.html" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-viral hover:text-viral-400 underline"
-                >
-                  Yahoo Finance
-                </a>
-              </div>
+              {/* Destaque removido conforme solicitação */}
             </div>
 
             {/* Services */}
@@ -140,7 +132,7 @@ const Footer: React.FC = () => {
                   <span className="text-sm font-medium">Chat ao Vivo</span>
                 </motion.button>
                 <div className="text-sm text-gray-300">
-                  <p>📧 suporte@viralizei.com.br</p>
+                  <p>📧 suporte@gramprovider.com</p>
                   <p>📱 WhatsApp: (31) 98358-4949</p>
                   <p>🕒 Seg-Sex: 8h às 18h</p>
                 </div>
@@ -155,8 +147,8 @@ const Footer: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © 2024 Viralizei. Todos os direitos reservados.
-            </div>
+              © 2025 GramProvider. Todos os diretios reservados
+             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <span>🔒 Pagamentos Seguros</span>
               <span>🚀 Entrega Instantânea</span>

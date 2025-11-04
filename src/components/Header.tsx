@@ -71,12 +71,23 @@ const Header: React.FC = () => {
   const logoCandidates = ['/brand/gramprovider.png', '/gramprovider-logo.png'];
 
   const achievementTemplates = [
-    { text: '50 Seguidores Virais Alcançados', icon: 'users' },
-    { text: '1000 Likes Virais', icon: 'heart' },
-    { text: '15 Comentários Orgânicos', icon: 'message' },
-    { text: '5000 Views Virais', icon: 'eye' },
-    { text: '100 Shares Virais', icon: 'share' },
-    { text: '250 Seguidores Reais', icon: 'rocket' },
+    { text: 'Instagram - Seguidores recentes', icon: 'users' },
+    { text: 'Instagram - Curtidas entregues', icon: 'heart' },
+    { text: 'Instagram - Visualizações entregues', icon: 'eye' },
+    { text: 'TikTok - Seguidores recentes', icon: 'users' },
+    { text: 'TikTok - Curtidas entregues', icon: 'heart' },
+    { text: 'TikTok - Visualizações entregues', icon: 'eye' },
+    { text: 'YouTube - Curtidas entregues', icon: 'heart' },
+    { text: 'YouTube - Visualizações entregues', icon: 'eye' },
+    { text: 'Facebook - Seguidores recentes', icon: 'users' },
+    { text: 'Facebook - Curtidas entregues', icon: 'heart' },
+    { text: 'Facebook - Visualizações entregues', icon: 'eye' },
+    { text: 'Twitter/X - Seguidores recentes', icon: 'users' },
+    { text: 'Twitter/X - Curtidas entregues', icon: 'heart' },
+    { text: 'Twitter/X - Visualizações entregues', icon: 'eye' },
+    { text: 'Kwai - Seguidores recentes', icon: 'users' },
+    { text: 'Kwai - Curtidas entregues', icon: 'heart' },
+    { text: 'Kwai - Visualizações entregues', icon: 'eye' },
   ];
 
   const generateRandomAchievement = (): AchievementBadge => {

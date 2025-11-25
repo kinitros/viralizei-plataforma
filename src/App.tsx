@@ -40,7 +40,7 @@ import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 import CheckoutInstagramStart from '@/pages/CheckoutInstagramStart';
 import CheckoutInstagramProfile from '@/pages/CheckoutInstagramProfile';
 import CheckoutInstagramPosts from '@/pages/CheckoutInstagramPosts';
-import CheckoutSuccess from '@/pages/CheckoutSuccess';
+import CheckoutSuccess from './pages/CheckoutSuccess';
 import GenericCheckout from '@/pages/GenericCheckout';
 
 export default function App() {

@@ -93,6 +93,7 @@ export default function App() {
             <Route path="/admin/produtos" element={<AdminProducts />} />
             <Route path="/admin/produtos/" element={<AdminProducts />} />
             <Route path="/admin/products" element={<AdminProducts />} />
+            <Route path="/admin/*" element={<AdminProducts />} />
             {/* Checkout interno */}
             <Route path="/checkout/instagram" element={<CheckoutInstagramStart />} />
             <Route path="/checkout/instagram/:username" element={<CheckoutInstagramProfile />} />

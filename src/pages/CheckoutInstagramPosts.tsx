@@ -74,14 +74,13 @@ export default function CheckoutInstagramPosts() {
   const [likesResolvedPrice, setLikesResolvedPrice] = useState<number>(0);
   const [viewsPrice, setViewsPrice] = useState<number>(0);
 
+  const [basePrice, setBasePrice] = useState<number>(price);
   const followersDiscountPct = getOrderBumpFollowersDiscountPct();
   const followersBumpAmount = useMemo(() => bumpFollowers ? followersPrice * (1 - followersDiscountPct) : 0, [bumpFollowers, followersPrice, followersDiscountPct]);
   const likesBumpAmount = useMemo(() => bumpLikes ? likesResolvedPrice : 0, [bumpLikes, likesResolvedPrice]);
   const viewsBumpAmount = useMemo(() => bumpViews ? viewsPrice : 0, [bumpViews, viewsPrice]);
   const grandTotal = useMemo(() => basePrice + followersBumpAmount + likesBumpAmount + viewsBumpAmount, [basePrice, followersBumpAmount, likesBumpAmount, viewsBumpAmount]);
   const grandTotalFormatted = useMemo(() => formatCurrencyBRL(grandTotal), [grandTotal]);
-
-  const [basePrice, setBasePrice] = useState<number>(price);
   const totalFormatted = useMemo(() => formatCurrencyBRL(grandTotal), [grandTotal]);
 
   useEffect(() => {

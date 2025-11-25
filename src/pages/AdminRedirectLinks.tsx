@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Edit2, Trash2, ExternalLink, Save, X, AlertCircle } from 'lucide-react';
+import { Plus, Edit2, Trash2, ExternalLink, Save, X, AlertCircle, ToggleLeft, ToggleRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toggleBetweenCustomAndInternal } from '@/lib/serviceRedirect';
 
 interface RedirectLink {
   id: string;
@@ -246,6 +247,103 @@ export default function AdminRedirectLinks() {
     window.open(url, '_blank');
   };
 
+  // Alternar entre link customizado e interno
+  const toggleLinkType = async (link: RedirectLink) => {
+    try {
+      const result = await toggleBetweenCustomAndInternal(
+        link.serviceKey,
+        link.quantity || 0,
+        link.url
+      );
+      
+      const adminPassword = sessionStorage.getItem('adminPassword') || '';
+      if (!adminPassword) {
+        navigate('/admin/login');
+        return;
+      }
+      
+      // Se estava usando link customizado, desativar ele e usar o interno
+      if (!result.isInternal) {
+        // Armazenar o link customizado temporariamente na descrição para poder restaurar depois
+        const customUrlStorage = link.url;
+        const newDescription = link.description?.replace(/\[CUSTOM_URL:.*?\]/g, '') || '';
+        const updatedDescription = `${newDescription} [CUSTOM_URL:${customUrlStorage}]`.trim();
+        
+        const response = await fetch(`/api/redirect-links/${link.id}`, {
+          method: 'PUT',
+          headers: { 
+            'Content-Type': 'application/json', 
+            'x-admin-password': adminPassword 
+          },
+          body: JSON.stringify({
+            serviceKey: link.serviceKey,
+            quantity: link.quantity,
+            url: result.url, // URL interna
+            description: updatedDescription
+          })
+        });
+        
+        if (response.status === 401 || response.status === 403) {
+          setError('Não autorizado. Faça login novamente.');
+          navigate('/admin/login');
+          return;
+        }
+        
+        const resultApi = await response.json();
+        if (resultApi.success) {
+          setSuccess('Alterado para link interno com sucesso!');
+          loadLinks();
+        } else {
+          setError(resultApi.message || 'Erro ao alternar link');
+        }
+      } else {
+        // Se é interno, verificar se tem link customizado armazenado para restaurar
+        const customUrlMatch = link.description?.match(/\[CUSTOM_URL:(.*?)\]/);
+        if (customUrlMatch && customUrlMatch[1]) {
+          // Restaurar o link customizado
+          const restoredDescription = link.description?.replace(/\[CUSTOM_URL:.*?\]/g, '').trim();
+          
+          const response = await fetch(`/api/redirect-links/${link.id}`, {
+            method: 'PUT',
+            headers: { 
+              'Content-Type': 'application/json', 
+              'x-admin-password': adminPassword 
+            },
+            body: JSON.stringify({
+              serviceKey: link.serviceKey,
+              quantity: link.quantity,
+              url: customUrlMatch[1], // URL customizada restaurada
+              description: restoredDescription
+            })
+          });
+          
+          if (response.status === 401 || response.status === 403) {
+            setError('Não autorizado. Faça login novamente.');
+            navigate('/admin/login');
+            return;
+          }
+          
+          const resultApi = await response.json();
+          if (resultApi.success) {
+            setSuccess('Restaurado para link customizado com sucesso!');
+            loadLinks();
+          } else {
+            setError(resultApi.message || 'Erro ao restaurar link');
+          }
+        } else {
+          setError('Nenhum link customizado armazenado para restaurar.');
+        }
+      }
+    } catch (err) {
+      setError('Erro ao alternar tipo de link');
+    }
+  };
+
+  // Verificar se um link é interno ou customizado
+  const isInternalLink = (url: string): boolean => {
+    return url.includes('/checkout/');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-6">
       <div className="max-w-6xl mx-auto">
@@ -420,6 +518,7 @@ export default function AdminRedirectLinks() {
                     <th className="text-left p-4 text-white font-semibold">Quantidade</th>
                     <th className="text-left p-4 text-white font-semibold">URL</th>
                     <th className="text-left p-4 text-white font-semibold">Descrição</th>
+                    <th className="text-left p-4 text-white font-semibold">Tipo</th>
                     <th className="text-left p-4 text-white font-semibold">Ações</th>
                   </tr>
                 </thead>
@@ -445,7 +544,26 @@ export default function AdminRedirectLinks() {
                         {link.description || '-'}
                       </td>
                       <td className="p-4">
+                        <div className="flex items-center space-x-2">
+                          {isInternalLink(link.url) ? (
+                            <ToggleRight className="w-5 h-5 text-green-400" />
+                          ) : (
+                            <ToggleLeft className="w-5 h-5 text-gray-400" />
+                          )}
+                          <span className="text-gray-300 text-sm">
+                            {isInternalLink(link.url) ? 'Interno' : 'Customizado'}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="p-4">
                         <div className="flex space-x-2">
+                          <button
+                            onClick={() => toggleLinkType(link)}
+                            className="text-purple-400 hover:text-purple-300 transition-colors"
+                            title="Alternar Tipo"
+                          >
+                            {isInternalLink(link.url) ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
+                          </button>
                           <button
                             onClick={() => testLink(link.url)}
                             className="text-blue-400 hover:text-blue-300 transition-colors"

@@ -87,8 +87,8 @@ export async function redirectToService(
 ): Promise<void> {
   try {
     let navigated = false;
-    if (customUrl) {
-      console.info('[redirectToService] Navegando para URL customizada:', customUrl);
+    if (customUrl && customUrl.includes('/checkout/')) {
+      console.info('[redirectToService] Navegando para checkout interno customizado:', customUrl);
       window.location.assign(customUrl);
       return;
     }
@@ -120,9 +120,8 @@ export async function redirectToService(
     }
 
     const configuredUrl = await getCustomRedirectUrl(serviceKey, quantity);
-    if (configuredUrl) {
-      // Se houver URL configurada, navega para ela (interno ou externo)
-      console.info('[redirectToService] Navegando para URL configurada:', configuredUrl);
+    if (configuredUrl && configuredUrl.includes('/checkout/')) {
+      console.info('[redirectToService] Navegando para checkout interno configurado:', configuredUrl);
       window.location.assign(configuredUrl);
       navigated = true;
       return;

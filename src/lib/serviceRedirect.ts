@@ -1,4 +1,6 @@
 import { getCustomRedirectUrl } from './serviceConfig';
+import { productService } from '../services/productService';
+import { packCheckoutData } from '../lib/encryption';
 
 // Tipos de serviços disponíveis
 export type ServiceType = 
@@ -86,17 +88,37 @@ export async function redirectToService(
   try {
     if (customUrl) {
       console.info('[redirectToService] Navegando para URL customizada:', customUrl);
-      // Usar navegação direta para evitar bloqueio de pop-up em mobile
       window.location.assign(customUrl);
       return;
     }
 
     const serviceKey = generateServiceKey(config);
 
+    try {
+      const [platform, type, regionRaw] = serviceKey.split('.');
+      const region = regionRaw === 'world' ? 'worldwide' : regionRaw === 'br' ? 'brazil' : regionRaw;
+      const products = await productService.getProducts({ network: platform, service_type: type, region, is_active: true } as any);
+      const match = products.find((p: any) => p.quantity === quantity && p.is_active);
+      if (match) {
+        console.info('[redirectToService] Produto encontrado:', serviceKey, 'qty:', quantity, 'price:', match.price);
+        if (serviceKey.startsWith('instagram.')) {
+          const search = new URLSearchParams({ key: serviceKey, qty: String(quantity), price: String(match.price) });
+          const instagramUrl = `/checkout/instagram?${search.toString()}`;
+          window.location.assign(instagramUrl);
+          return;
+        }
+        const data = packCheckoutData({ key: serviceKey, qty: quantity, price: match.price });
+        const checkoutUrl = `/checkout/${config.platform}?data=${encodeURIComponent(data)}`;
+        window.location.assign(checkoutUrl);
+        return;
+      }
+    } catch (productError) {
+      console.warn('[redirectToService] Produto não encontrado, tentando fallback...', productError);
+    }
+
     const configuredUrl = await getCustomRedirectUrl(serviceKey, quantity);
-    if (configuredUrl) {
-      console.info('[redirectToService] Navegando para URL configurada:', configuredUrl);
-      // Usar navegação direta para evitar bloqueio de pop-up em mobile
+    if (configuredUrl && configuredUrl.includes('/checkout/')) {
+      console.info('[redirectToService] Navegando para URL interna configurada:', configuredUrl);
       window.location.assign(configuredUrl);
       return;
     }
@@ -106,13 +128,21 @@ export async function redirectToService(
       return;
     }
 
-    // Sem fallback de checkout: apenas loga aviso quando não houver URL configurada
-    console.warn(`Sem URL configurada para ${serviceKey} (qty=${quantity}). Configure via Admin Redirect Links ou variáveis de ambiente.`);
+    if (serviceKey.startsWith('instagram.')) {
+      const search = new URLSearchParams({ key: serviceKey, qty: String(quantity) });
+      console.info('[redirectToService] Levando ao checkout interno:', `/checkout/instagram?${search.toString()}`);
+      window.location.assign(`/checkout/instagram?${search.toString()}`);
+      return;
+    }
+
+    const data = packCheckoutData({ key: serviceKey, qty: quantity, price: '' });
+    const fallbackUrl = `/checkout/${config.platform}?data=${encodeURIComponent(data)}`;
+    console.info('[redirectToService] Usando checkout genérico como fallback:', fallbackUrl);
+    window.location.assign(fallbackUrl);
     return;
 
   } catch (error) {
     console.error('Erro no redirecionamento:', error);
-    // Removido fallback para openCheckout; manter só log de erro
   }
 }
 
@@ -194,4 +224,51 @@ export function getAvailableServices(): string[] {
 export function isServiceAvailable(config: ServiceConfig): boolean {
   const serviceKey = generateServiceKey(config);
   return serviceKey in SERVICE_KEY_MAP;
+}
+
+/**
+ * Gera URL interna padrão para um serviço
+ * @param serviceKey - Chave do serviço
+ * @param quantity - Quantidade
+ * @returns URL interna padrão
+ */
+export function generateInternalUrl(serviceKey: string, quantity: number): string {
+  if (serviceKey.startsWith('instagram.')) {
+    return `/checkout/instagram?key=${serviceKey}&qty=${quantity}`;
+  }
+
+  const [platform] = serviceKey.split('.');
+  const data = packCheckoutData({ key: serviceKey, qty: quantity, price: '' });
+  return `/checkout/${platform}?data=${encodeURIComponent(data)}`;
+}
+
+/**
+ * Alterna entre link customizado e link interno padrão
+ * @param serviceKey - Chave do serviço
+ * @param quantity - Quantidade
+ * @param currentUrl - URL atual (opcional)
+ * @returns Objeto com URL e indicador de tipo
+ */
+export async function toggleBetweenCustomAndInternal(
+  serviceKey: string, 
+  quantity: number,
+  currentUrl?: string
+): Promise<{ url: string; isInternal: boolean }> {
+  
+  // Se tem URL atual e é customizada, retornar a interna
+  if (currentUrl && !currentUrl.includes('/checkout/')) {
+    const internalUrl = generateInternalUrl(serviceKey, quantity);
+    return { url: internalUrl, isInternal: true };
+  }
+  
+  // Tentar buscar URL customizada
+  const customUrl = await getCustomRedirectUrl(serviceKey, quantity);
+  
+  if (customUrl) {
+    return { url: customUrl, isInternal: false };
+  }
+  
+  // Se não tem customizada, retornar a interna
+  const internalUrl = generateInternalUrl(serviceKey, quantity);
+  return { url: internalUrl, isInternal: true };
 }

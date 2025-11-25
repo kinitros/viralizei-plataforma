@@ -35,7 +35,13 @@ import KwaiViews from '@/pages/KwaiViews';
 import AdminCheckout from '@/pages/AdminCheckout';
 import AdminRedirectLinks from '@/pages/AdminRedirectLinks';
 import AdminLogin from '@/pages/AdminLogin';
+import AdminProducts from '@/pages/AdminProducts';
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
+import CheckoutInstagramStart from '@/pages/CheckoutInstagramStart';
+import CheckoutInstagramProfile from '@/pages/CheckoutInstagramProfile';
+import CheckoutInstagramPosts from '@/pages/CheckoutInstagramPosts';
+import CheckoutSuccess from '@/pages/CheckoutSuccess';
+import GenericCheckout from '@/pages/GenericCheckout';
 
 export default function App() {
   return (
@@ -43,7 +49,7 @@ export default function App() {
       <ScrollToTop />
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 pt-32">
+        <main className="flex-1 pt-40 md:pt-44 lg:pt-48">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/todos-os-servicos" element={<div className="text-center text-xl py-20">Todos os Serviços - Em Breve</div>} />
@@ -80,9 +86,20 @@ export default function App() {
             <Route path="/kwai/seguidores-brasileiros" element={<KwaiFollowersBrazil />} />
             <Route path="/kwai/curtidas-brasileiras" element={<KwaiLikes />} />
             <Route path="/kwai/visualizacoes" element={<KwaiViews />} />
+            <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/checkout" element={<AdminCheckout />} />
             <Route path="/admin/redirect-links" element={<AdminRedirectLinks />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/produtos" element={<AdminProducts />} />
+            <Route path="/admin/produtos/" element={<AdminProducts />} />
+            <Route path="/admin/products" element={<AdminProducts />} />
+            {/* Checkout interno */}
+            <Route path="/checkout/instagram" element={<CheckoutInstagramStart />} />
+            <Route path="/checkout/instagram/:username" element={<CheckoutInstagramProfile />} />
+            <Route path="/checkout/instagram/:username/posts" element={<CheckoutInstagramPosts />} />
+            <Route path="/checkout/success" element={<CheckoutSuccess />} />
+            {/* Checkout genérico para todas as plataformas */}
+            <Route path="/checkout/:platform" element={<GenericCheckout />} />
           </Routes>
         </main>
         <Footer />

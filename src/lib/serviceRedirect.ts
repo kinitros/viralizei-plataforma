@@ -86,6 +86,7 @@ export async function redirectToService(
   customUrl?: string
 ): Promise<void> {
   try {
+    let navigated = false;
     if (customUrl) {
       console.info('[redirectToService] Navegando para URL customizada:', customUrl);
       window.location.assign(customUrl);
@@ -105,11 +106,13 @@ export async function redirectToService(
           const search = new URLSearchParams({ key: serviceKey, qty: String(quantity), price: String(match.price) });
           const instagramUrl = `/checkout/instagram?${search.toString()}`;
           window.location.assign(instagramUrl);
+          navigated = true;
           return;
         }
         const data = packCheckoutData({ key: serviceKey, qty: quantity, price: match.price });
         const checkoutUrl = `/checkout/${config.platform}?data=${encodeURIComponent(data)}`;
         window.location.assign(checkoutUrl);
+        navigated = true;
         return;
       }
     } catch (productError) {
@@ -117,9 +120,11 @@ export async function redirectToService(
     }
 
     const configuredUrl = await getCustomRedirectUrl(serviceKey, quantity);
-    if (configuredUrl && configuredUrl.includes('/checkout/')) {
-      console.info('[redirectToService] Navegando para URL interna configurada:', configuredUrl);
+    if (configuredUrl) {
+      // Se houver URL configurada, navega para ela (interno ou externo)
+      console.info('[redirectToService] Navegando para URL configurada:', configuredUrl);
       window.location.assign(configuredUrl);
+      navigated = true;
       return;
     }
 
@@ -132,6 +137,7 @@ export async function redirectToService(
       const search = new URLSearchParams({ key: serviceKey, qty: String(quantity) });
       console.info('[redirectToService] Levando ao checkout interno:', `/checkout/instagram?${search.toString()}`);
       window.location.assign(`/checkout/instagram?${search.toString()}`);
+      navigated = true;
       return;
     }
 
@@ -139,6 +145,7 @@ export async function redirectToService(
     const fallbackUrl = `/checkout/${config.platform}?data=${encodeURIComponent(data)}`;
     console.info('[redirectToService] Usando checkout genérico como fallback:', fallbackUrl);
     window.location.assign(fallbackUrl);
+    navigated = true;
     return;
 
   } catch (error) {

@@ -2,7 +2,7 @@ import type { Handler, HandlerEvent } from '@netlify/functions';
 import { createErrorResponse, createSuccessResponse, handleCors } from './utils/auth.js';
 
 // Import the JSON store utility
-import { readCheckoutStore } from '../../api/utils/jsonStore.js';
+import { readCheckoutStore } from '../../api/utils/jsonStore';
 
 const handler: Handler = async (event: HandlerEvent) => {
   // Handle CORS preflight

@@ -1,6 +1,6 @@
 import type { Handler, HandlerEvent } from '@netlify/functions'
 import { createErrorResponse, createSuccessResponse, handleCors } from './utils/auth.js'
-import productService from '../../api/services/productService.js'
+import productService from '../../api/services/productService'
 
 function norm(t?: string) {
   if (!t) return ''
@@ -86,4 +86,3 @@ const handler: Handler = async (event) => {
 }
 
 export { handler }
-

@@ -42,7 +42,7 @@ export default function CheckoutInstagramPosts() {
   const [searchParams] = useSearchParams();
 
   const type = (searchParams.get('type') || 'likes') as 'likes' | 'views';
-  const qty = parseInt(searchParams.get('qty') || '0', 10) || 0;
+  const qty = parseInt(searchParams.get('qty') || searchParams.get('qtty') || '0', 10) || 0;
   const key = searchParams.get('key') || '';
   const price = parseFloat(searchParams.get('price') || '0') || 0;
 

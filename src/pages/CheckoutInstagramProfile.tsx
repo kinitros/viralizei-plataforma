@@ -51,7 +51,7 @@ const CheckoutInstagramProfile: React.FC = () => {
   const [likesPrice, setLikesPrice] = useState<number>(0);
   const [viewsPrice, setViewsPrice] = useState<number>(0);
 
-  const qty = Number(params.get('qty') || '0');
+  const qty = Number(params.get('qty') || params.get('qtty') || '0');
   const key = params.get('key') || '';
   const price = params.get('price');
 
